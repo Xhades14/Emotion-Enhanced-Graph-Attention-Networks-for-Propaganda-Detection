@@ -16,8 +16,8 @@ os.environ["TRANSFORMERS_NO_FLAX"] = "1"
 os.environ["USE_TF"] = "0"
 os.environ["USE_FLAX"] = "0"
 
-BASE_MODEL_DIR = Path("eng_prop_model") / "SemEval_Trained_Intermediate(final)"
-ADAPTER_DIR = Path("hprop-lora-adapter")
+BASE_MODEL_DIR = Path("artifacts") / "models" / "eng_prop_model" / "SemEval_Trained_Intermediate(final)"
+ADAPTER_DIR = Path("artifacts") / "models" / "hprop-lora-adapter"
 
 DEFAULT_TEXTS = [
     "प्रधानमंत्री ने कहा कि देश का मीडिया झूठ फैला रहा है।",

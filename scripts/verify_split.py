@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Load data
-data_path = Path("prop_datasets") / "tree_width" / "merged_conversations.jsonl"
+data_path = Path("artifacts") / "prop_datasets" / "tree_width" / "merged_conversations.jsonl"
 records = []
 with data_path.open("r", encoding="utf-8") as f:
     for line in f:

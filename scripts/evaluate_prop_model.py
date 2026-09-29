@@ -26,12 +26,12 @@ from sklearn.metrics import (
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 
-DEFAULT_DATASET_PATH = Path("prop_datasets") / "covid_3k_labeled.csv"
+DEFAULT_DATASET_PATH = Path("artifacts") / "prop_datasets" / "covid_3k_labeled.csv"
 DEFAULT_TEXT_COLUMN = "tweet"
 DEFAULT_LABEL_COLUMN = "labels"
 DEFAULT_BATCH_SIZE = 32
 DEFAULT_POSITIVE_INDEX = 1
-DEFAULT_MODEL_DIR = Path("eng_prop_model") / "SemEval_Trained_Intermediate(final)"
+DEFAULT_MODEL_DIR = Path("artifacts") / "models" / "eng_prop_model" / "SemEval_Trained_Intermediate(final)"
 
 
 def batch_iterable(items: List[str], batch_size: int) -> Iterable[List[str]]:

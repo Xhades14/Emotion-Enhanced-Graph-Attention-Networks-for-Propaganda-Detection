@@ -9,6 +9,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.graph import build_graph
 
+# Windows consoles default to cp1252, which cannot print the emoji below
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 def run_demo():
     print("=== Evidence Retrieval and Verification Pipeline ===")
     

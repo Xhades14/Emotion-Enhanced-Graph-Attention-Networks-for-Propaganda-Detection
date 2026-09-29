@@ -21,11 +21,11 @@ import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 
-TREE_WIDTH_DIR = Path("prop_datasets") / "tree_width"
+TREE_WIDTH_DIR = Path("artifacts") / "prop_datasets" / "tree_width"
 MERGED_JSONL = TREE_WIDTH_DIR / "merged_conversations.jsonl"
 FEATURE_CSV = TREE_WIDTH_DIR / "meta_features.csv"
-PROP_MODEL_DIR = Path("eng_prop_model") / "SemEval_Trained_Intermediate(final)"
-EMO_MODEL_DIR = Path("eng_emo_model") / "models"
+PROP_MODEL_DIR = Path("artifacts") / "models" / "eng_prop_model" / "SemEval_Trained_Intermediate(final)"
+EMO_MODEL_DIR = Path("artifacts") / "models" / "eng_emo_model" / "models"
 
 GOEMOTIONS_LABELS = [
 	"admiration",

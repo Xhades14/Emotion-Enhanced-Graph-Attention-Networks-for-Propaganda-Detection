@@ -18,9 +18,7 @@ class FakeLLM:
 
 def test_pipeline_runs_minimally():
     fake_llm = FakeLLM(responses=[
-        "[]",  # claim extractor returns no claims
-        "{\n \"claim_id\":\"c1\", \"verdicts\":[], \"supporting_count\":0, \"refuting_count\":0, \"claim_score\": null, \"top_evidence_ids\":[] }",
-        "{\n \"post_id\":\"p1\", \"label\":\"send_downstream\" }",
+        '{"has_claim": false, "reasoning": "test input is treated as non-claim"}',
     ])
     app = build_graph(llm_override=fake_llm)
     state = {

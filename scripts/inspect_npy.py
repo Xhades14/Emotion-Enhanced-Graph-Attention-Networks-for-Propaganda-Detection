@@ -9,7 +9,7 @@ from typing import Any
 import numpy as np
 
 
-DEFAULT_NPY_PATH = Path("prop_datasets") / "time_order" / "train_false.npy"
+DEFAULT_NPY_PATH = Path("artifacts") / "prop_datasets" / "time_order" / "train_false.npy"
 
 
 def to_serializable(obj: Any) -> Any:

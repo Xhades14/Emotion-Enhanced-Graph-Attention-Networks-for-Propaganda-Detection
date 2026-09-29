@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-FEATURE_CSV = Path("prop_datasets") / "tree_width" / "meta_features.csv"
+FEATURE_CSV = Path("artifacts") / "prop_datasets" / "tree_width" / "meta_features.csv"
 
 
 def parse_args() -> argparse.Namespace:

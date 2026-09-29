@@ -173,7 +173,7 @@ from train_gat_propaganda import GATClassifier
 
 # Load model
 model = GATClassifier(in_channels=769, hidden_dim=128, heads=8, dropout=0.2)
-model.load_state_dict(torch.load("artifacts/gat_propaganda/gat_model.pt"))
+model.load_state_dict(torch.load("artifacts/models/gat_propaganda/gat_model.pt"))
 model.eval()
 ```
 
@@ -198,10 +198,10 @@ import pickle
 import pandas as pd
 
 # Load edges
-edges_df = pd.read_csv("artifacts/gat_propaganda/learned_edges.csv")
+edges_df = pd.read_csv("artifacts/models/gat_propaganda/learned_edges.csv")
 
 # Load graph
-with open("artifacts/gat_propaganda/learned_graph.gpickle", "rb") as f:
+with open("artifacts/models/gat_propaganda/learned_graph.gpickle", "rb") as f:
     graph = pickle.load(f)
 
 # Analyze attention
@@ -236,9 +236,9 @@ python scripts/train_gat_propaganda.py \
 
 ## Dataset
 
-- **Source**: `prop_datasets/tree_width/merged_conversations.jsonl`
-- **Meta-features**: `prop_datasets/tree_width/meta_features.csv`
-- **Meta-classifier**: `models/meta_classifier.joblib`
+- **Source**: `artifacts/prop_datasets/tree_width/merged_conversations.jsonl`
+- **Meta-features**: `artifacts/prop_datasets/tree_width/meta_features.csv`
+- **Meta-classifier**: `artifacts/models/meta_classifier.joblib`
 - **Total samples**: 1,154 tweets
 - **Class balance**: ~50% propaganda, ~50% non-propaganda
 - **Train/Val/Test split**: 80% / 10% / 10% (stratified)

@@ -13,7 +13,7 @@ import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 
-DEFAULT_MODEL_DIR = Path("eng_prop_model") / "SemEval_Trained_Intermediate(final)"
+DEFAULT_MODEL_DIR = Path("artifacts") / "models" / "eng_prop_model" / "SemEval_Trained_Intermediate(final)"
 DEFAULT_TEXTS = [
     "BREAKING: Opposition leaders are secretly plotting to sell India's natural resources to foreign powers—share before they silence us!",
     "Forward this now: the central government's vaccine drive is actually a foreign plan to make Indians infertile!",

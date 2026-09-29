@@ -32,6 +32,17 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
 
+# Downloaded models/datasets are unzipped into artifacts/ (see README)
+ARTIFACTS_DIR = Path(current_dir) / "artifacts"
+MODELS_DIR = ARTIFACTS_DIR / "models"
+# Hugging Face / PEFT loaders get plain strings
+PROP_MODEL_DIR = str(MODELS_DIR / "eng_prop_model" / "SemEval_Trained_Intermediate(final)")
+HINDI_ADAPTER_DIR = str(MODELS_DIR / "hprop-lora-adapter")
+EMO_MODEL_DIR = str(MODELS_DIR / "eng_emo_model" / "models")
+META_CLASSIFIER_PATH = MODELS_DIR / "meta_classifier.joblib"
+GAT_DIR = MODELS_DIR / "gat_propaganda"
+CONVERSATIONS_PATH = ARTIFACTS_DIR / "prop_datasets" / "tree_width" / "merged_conversations.jsonl"
+
 from src.graph import build_graph
 from src.schemas import Claim, ClaimEvidence, FinalDecision
 from sentence_transformers import SentenceTransformer
@@ -40,10 +51,6 @@ import torch.nn.functional as F
 from torch_geometric.nn import GATConv
 from torch import Tensor
 import time
-try:
-    from googletrans import Translator as GoogleTranslator
-except ImportError:
-    GoogleTranslator = None
 
 # Emotion label mappings must match build_meta_dataset.py to keep features aligned
 GOEMOTIONS_LABELS = [
@@ -213,7 +220,7 @@ def load_verification_pipeline():
 def load_propaganda_model():
     """Load English propaganda detection model"""
     from transformers import AutoTokenizer, AutoModelForSequenceClassification
-    model_path = "eng_prop_model/SemEval_Trained_Intermediate(final)"
+    model_path = PROP_MODEL_DIR
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForSequenceClassification.from_pretrained(model_path)
     model.eval()
@@ -223,8 +230,8 @@ def load_propaganda_model():
 def load_hindi_propaganda_model():
     """Load Hindi LoRA-adapted propaganda model"""
     from transformers import AutoTokenizer, AutoModelForSequenceClassification
-    base_model_path = "eng_prop_model/SemEval_Trained_Intermediate(final)"
-    adapter_path = "hprop-lora-adapter"
+    base_model_path = PROP_MODEL_DIR
+    adapter_path = HINDI_ADAPTER_DIR
     tokenizer = AutoTokenizer.from_pretrained(base_model_path)
     model = AutoModelForSequenceClassification.from_pretrained(base_model_path)
     model = PeftModel.from_pretrained(model, adapter_path)
@@ -235,7 +242,7 @@ def load_hindi_propaganda_model():
 def load_emotion_model():
     """Load English emotion detection model"""
     from transformers import AutoTokenizer, AutoModelForSequenceClassification
-    model_path = "eng_emo_model/models"
+    model_path = EMO_MODEL_DIR
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     model = AutoModelForSequenceClassification.from_pretrained(model_path)
     model.eval()
@@ -244,7 +251,7 @@ def load_emotion_model():
 @st.cache_resource
 def load_meta_classifier():
     """Load meta-classifier"""
-    return joblib.load("models/meta_classifier.joblib")
+    return joblib.load(META_CLASSIFIER_PATH)
 
 @st.cache_resource
 def load_sentence_embedder():
@@ -253,12 +260,9 @@ def load_sentence_embedder():
 
 @st.cache_resource
 def load_hi_en_translator():
-    """Load lightweight Hindi to English translator (googletrans fallback only to avoid memory issues)."""
-    if GoogleTranslator is None:
-        st.warning("googletrans not available. Install with: pip install googletrans==3.1.0a0")
-        return None
+    """Load lightweight Hindi to English translator (deep-translator, avoids loading MT models)."""
     try:
-        return GoogleTranslator()
+        return GoogleTranslator(source="hi", target="en")
     except Exception as exc:
         st.warning(f"Could not initialize translator: {exc}")
         return None
@@ -295,18 +299,18 @@ def load_gat_model():
     
     # Load model
     model = GATClassifier(in_channels=769, hidden_dim=128, heads=8, dropout=0.2)
-    model.load_state_dict(torch.load("artifacts/gat_propaganda/gat_model.pt", map_location='cpu'))
+    model.load_state_dict(torch.load(GAT_DIR / "gat_model.pt", map_location='cpu'))
     model.eval()
     
     # Load graph data
-    with open("artifacts/gat_propaganda/learned_graph.gpickle", "rb") as f:
+    with open(GAT_DIR / "learned_graph.gpickle", "rb") as f:
         graph = pickle.load(f)
     
     # Load node embeddings and features (from training)
-    embeddings_data = torch.load("artifacts/gat_propaganda/node_embeddings.pt", map_location='cpu')
+    embeddings_data = torch.load(GAT_DIR / "node_embeddings.pt", map_location='cpu')
     
     # Load dataset for tweet mapping
-    df = pd.read_json("prop_datasets/tree_width/merged_conversations.jsonl", lines=True)
+    df = pd.read_json(CONVERSATIONS_PATH, lines=True)
     if "post_id" in df.columns and "tweet_id" not in df.columns:
         df = df.rename(columns={"post_id": "tweet_id"})
     if "label" in df.columns and "true_label" not in df.columns:
@@ -318,7 +322,7 @@ def load_gat_model():
 @st.cache_data
 def load_sample_conversations():
     """Load merged conversations dataset"""
-    df = pd.read_json("prop_datasets/tree_width/merged_conversations.jsonl", lines=True)
+    df = pd.read_json(CONVERSATIONS_PATH, lines=True)
     if "post_id" in df.columns and "tweet_id" not in df.columns:
         df = df.rename(columns={"post_id": "tweet_id"})
     if "label" in df.columns and "true_label" not in df.columns:
@@ -370,15 +374,15 @@ def translate_hindi_to_english(
     texts: List[str],
     translator,
 ) -> List[str]:
-    """Translate Hindi texts using lightweight googletrans API."""
+    """Translate Hindi texts using deep-translator's Google backend."""
     if not texts or not translator:
         return texts
 
     outputs: List[str] = []
     for text in texts:
         try:
-            result = translator.translate(text, src='hi', dest='en')
-            outputs.append(result.text if result and result.text else text)
+            result = translator.translate(text)
+            outputs.append(result or text)
         except Exception:  # pragma: no cover - API fallback best effort
             outputs.append(text)
     return outputs
@@ -606,8 +610,13 @@ to provide comprehensive misinformation analysis.
 with st.sidebar:
     st.header("⚙️ Pipeline Configuration")
     
-    verification_enabled = st.checkbox("Enable Verification Stage", value=True, 
+    # Stage 1 needs Gemini; without a key, skip straight to the propaganda stages
+    gemini_available = bool(os.environ.get("GEMINI_API_KEY"))
+    verification_enabled = st.checkbox("Enable Verification Stage", value=gemini_available,
+                                       disabled=not gemini_available,
                                        help="Stage 1: LLM-based claim verification")
+    if not gemini_available:
+        st.caption("Stage 1 skipped: set GEMINI_API_KEY to enable claim verification.")
     propaganda_enabled = st.checkbox("Enable Propaganda Detection", value=True,
                                      help="Stage 2: Propaganda + Emotion analysis")
     gat_enabled = st.checkbox("Enable GAT Inference", value=True,

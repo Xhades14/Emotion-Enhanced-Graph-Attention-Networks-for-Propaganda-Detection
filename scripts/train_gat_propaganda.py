@@ -30,11 +30,11 @@ from torch.optim import Adam
 from torch_geometric.data import Data
 from torch_geometric.nn import GATConv
 
-DEFAULT_DATA_PATH = Path("prop_datasets") / "tree_width" / "merged_conversations.jsonl"
-DEFAULT_META_FEATURES = Path("prop_datasets") / "tree_width" / "meta_features.csv"
-DEFAULT_META_MODEL = Path("models") / "meta_classifier.joblib"
+DEFAULT_DATA_PATH = Path("artifacts") / "prop_datasets" / "tree_width" / "merged_conversations.jsonl"
+DEFAULT_META_FEATURES = Path("artifacts") / "prop_datasets" / "tree_width" / "meta_features.csv"
+DEFAULT_META_MODEL = Path("artifacts") / "models" / "meta_classifier.joblib"
 DEFAULT_EMBED_MODEL = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
-DEFAULT_OUTPUT_DIR = Path("artifacts") / "gat_propaganda"
+DEFAULT_OUTPUT_DIR = Path("artifacts") / "models" / "gat_propaganda"
 
 META_FEATURE_COLUMNS = [
     "text_pred",

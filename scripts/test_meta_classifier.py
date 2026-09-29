@@ -8,11 +8,11 @@ from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, classifi
 
 # Load meta-classifier
 print("Loading meta-classifier...")
-meta_classifier = joblib.load("models/meta_classifier.joblib")
+meta_classifier = joblib.load("artifacts/models/meta_classifier.joblib")
 
 # Load meta features
 print("Loading meta features...")
-meta_df = pd.read_csv("prop_datasets/tree_width/meta_features.csv")
+meta_df = pd.read_csv("artifacts/prop_datasets/tree_width/meta_features.csv")
 
 # Rename columns if needed
 if "post_id" in meta_df.columns and "tweet_id" not in meta_df.columns:

@@ -15,8 +15,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 
-FEATURE_CSV = Path("prop_datasets") / "tree_width" / "meta_features.csv"
-MODEL_PATH = Path("models") / "meta_classifier.joblib"
+FEATURE_CSV = Path("artifacts") / "prop_datasets" / "tree_width" / "meta_features.csv"
+MODEL_PATH = Path("artifacts") / "models" / "meta_classifier.joblib"
 
 EMOTION_FEATURES: List[str] = [
     "mean_anger",

@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Iterable, List
 
 
-TREE_WIDTH_DIR = Path("prop_datasets") / "tree_width"
+TREE_WIDTH_DIR = Path("artifacts") / "prop_datasets" / "tree_width"
 DEFAULT_POSITIVE_JSONL = TREE_WIDTH_DIR / "train.jsonl"
 DEFAULT_NEGATIVE_JSONL = TREE_WIDTH_DIR / "train_false.jsonl"
 DEFAULT_OUTPUT_JSONL = TREE_WIDTH_DIR / "merged_conversations.jsonl"

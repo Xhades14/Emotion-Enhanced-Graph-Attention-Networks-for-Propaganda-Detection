@@ -1,0 +1,17 @@
+streamlit
+pandas
+numpy
+torch
+torch-geometric
+transformers
+peft
+sentence-transformers
+scikit-learn==1.5.1  # meta_classifier.joblib was saved with this version
+joblib
+networkx
+matplotlib
+requests
+pydantic
+langchain-core
+langgraph
+deep-translator

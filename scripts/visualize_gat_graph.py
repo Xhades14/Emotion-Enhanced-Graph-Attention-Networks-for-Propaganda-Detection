@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 
 # Load artifacts
-artifact_dir = Path("artifacts/gat_propaganda")
+artifact_dir = Path("artifacts/models/gat_propaganda")
 edges_df = pd.read_csv(artifact_dir / "learned_edges.csv")
 
 with open(artifact_dir / "learned_graph.gpickle", "rb") as f:

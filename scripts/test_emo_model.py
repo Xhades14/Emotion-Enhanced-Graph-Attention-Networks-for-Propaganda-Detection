@@ -13,7 +13,7 @@ import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 
-DEFAULT_MODEL_DIR = Path("eng_emo_model") / "models"
+DEFAULT_MODEL_DIR = Path("artifacts") / "models" / "eng_emo_model" / "models"
 DEFAULT_TEXTS = [
     "I can't believe they betrayed us—I'm furious and shaking.",
     "This is the best news I've heard all week, I'm so happy!",

@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+.venv/
+venv/
+env/
+
+.env
+.env.*
+
+# Local model and dataset downloads
+artifacts/models/*
+!artifacts/models/gat_propaganda/
+artifacts/prop_datasets/
