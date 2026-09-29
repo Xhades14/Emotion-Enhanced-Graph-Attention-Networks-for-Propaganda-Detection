@@ -20,9 +20,9 @@ If `torch-geometric` fails to install, follow the [PyG install guide](https://py
 
 ## Download models and data
 
-The trained models and datasets are too large for git. Download the zip from:
+The trained models and datasets are too large for git. Download `propaganda_artifacts.zip` from this Google Drive folder:
 
-**➡️ [DRIVE_LINK_PLACEHOLDER](DRIVE_LINK_PLACEHOLDER)**
+**➡️ [Models and datasets (Google Drive)](https://drive.google.com/drive/folders/1yLrHTcTEQTKuxlxOIP3BKKw9PlubpaeR?usp=sharing)**
 
 Unzip it **into the `artifacts/` folder** (merge with what is already there). You should end up with:
 
