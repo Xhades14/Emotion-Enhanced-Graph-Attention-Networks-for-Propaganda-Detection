@@ -1,4 +1,4 @@
-# Evidence Retrieval & Propaganda Detection Pipeline
+# Evidence Retrieval & Propaganda Detection in Social Media
 
 A three-stage misinformation analysis pipeline for social media posts (English and Hindi), with a Streamlit UI:
 
