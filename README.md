@@ -1,4 +1,4 @@
-# Emotion-Enhanced Graph Attention Networks for Propaganda Detection in Social Media
+# Emotion-Enhanced Graph Attention Networks and Evidence Retrieval Pipeline for Propaganda Detection in Social Media
 
 A three-stage misinformation analysis pipeline for social media posts (English and Hindi), with a Streamlit UI:
 
